@@ -40,6 +40,7 @@ class ViewController: UITableViewController {
     
     func submit(_ answer: String) {
         let lowerAnswer = answer.lowercased()
+        let errorTitle: String
         
         if isPossible(word: lowerAnswer) {
             if isOriginal(word: lowerAnswer) {
@@ -47,9 +48,21 @@ class ViewController: UITableViewController {
                     usedWords.insert(lowerAnswer, at: 0)
                     let indexPath = IndexPath(item: 0, section: 0)
                     tableView.insertRows(at: [indexPath], with: .automatic)
+                    
+                    return
+                } else {
+                    errorTitle = "Word not recognized."
                 }
+            } else {
+                errorTitle = "Word already used."
             }
+        } else {
+            errorTitle = "Word not possible."
         }
+        
+        let ac = UIAlertController(title: errorTitle, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
     
     func isPossible(word: String) -> Bool {
@@ -74,7 +87,7 @@ class ViewController: UITableViewController {
         let range = NSRange(location: 0, length: word.utf16.count)
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
         
-        return misspelledRange = NSNotFound
+        return misspelledRange.location == NSNotFound
     }
     
     @objc func promptForAnswer() {
