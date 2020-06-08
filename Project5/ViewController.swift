@@ -40,7 +40,6 @@ class ViewController: UITableViewController {
     
     func submit(_ answer: String) {
         let lowerAnswer = answer.lowercased()
-        let errorTitle: String
         
         if isPossible(word: lowerAnswer) {
             if isOriginal(word: lowerAnswer) {
@@ -51,16 +50,19 @@ class ViewController: UITableViewController {
                     
                     return
                 } else {
-                    errorTitle = "Word not recognized."
+                    showErrorMessage("Word not recognized.")
                 }
             } else {
-                errorTitle = "Word already used."
+                showErrorMessage("Word already used.")
             }
         } else {
-            errorTitle = "Word not possible."
+            showErrorMessage("Word not possible.")
         }
-        
-        let ac = UIAlertController(title: errorTitle, message: nil, preferredStyle: .alert)
+       
+    }
+    
+    func showErrorMessage(_ title: String) {
+        let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
     }
