@@ -68,6 +68,10 @@ class ViewController: UITableViewController {
     func isPossible(word: String) -> Bool {
         var tempWord = title?.lowercased()
         
+        if word.count <= 2 || tempWord == word {
+            return false
+        }
+        
         for letter in word {
             if let location = tempWord?.firstIndex(of: letter) {
                 tempWord?.remove(at: location)
